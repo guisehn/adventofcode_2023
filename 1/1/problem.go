@@ -13,7 +13,7 @@ func readInput() string {
 	if err != nil {
 		panic(err)
 	}
-	return string(dat)
+	return strings.TrimSpace(string(dat))
 }
 
 var re = regexp.MustCompile(`[^0-9]`)
