@@ -48,12 +48,6 @@ func readInput() string {
 	return strings.TrimSpace(string(dat))
 }
 
-var digitRe = regexp.MustCompile("[0-9]")
-
-func isDigit(str string) bool {
-	return digitRe.MatchString(str)
-}
-
 func toInt(str string) int {
 	n, err := strconv.Atoi(str)
 	if err != nil {
