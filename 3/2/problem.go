@@ -48,7 +48,7 @@ func readNumber(line *[]string, x int) int {
 	for ; x > 0 && isDigit((*line)[x-1]); x-- {
 	}
 
-	// go forward until digit ends
+	// go forward until end of number
 	for ; x < len(*line) && isDigit((*line)[x]); x++ {
 		number += (*line)[x]
 	}
