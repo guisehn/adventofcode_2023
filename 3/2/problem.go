@@ -89,7 +89,7 @@ func getAdjacentNumbers(matrix *[][]string, x int, y int) []int {
 	}
 
 	numbers := []int{}
-	for number, _ := range numbersSet {
+	for number := range numbersSet {
 		numbers = append(numbers, number)
 	}
 	return numbers
@@ -114,19 +114,13 @@ func findGearRatios(matrix [][]string) []int {
 }
 
 func main() {
-	// n := []string{"2", "3", "4", "1", "2", "3", "4", "5", "6", "7"}
-
-	// fmt.Println(readNumber(&n, 5))
-
 	input := readInput()
 	matrix := toMatrix(input)
 	gearRatios := findGearRatios(matrix)
 
 	sum := 0
-
 	for _, gearRatio := range gearRatios {
 		sum += gearRatio
 	}
-
 	fmt.Println(sum)
 }
