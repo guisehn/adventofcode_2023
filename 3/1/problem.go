@@ -8,11 +8,6 @@ import (
 	"strings"
 )
 
-type Coord struct {
-	x int
-	y int
-}
-
 func readInput() string {
 	dat, err := os.ReadFile("input.txt")
 	if err != nil {
