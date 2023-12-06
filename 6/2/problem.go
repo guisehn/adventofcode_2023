@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
+)
 
 type Race struct {
 	time           int
@@ -22,7 +28,29 @@ func (race Race) countImprovements() int {
 	return count
 }
 
+func NewRace(input string) Race {
+	input = regexp.MustCompile("([^0-9\n])").ReplaceAllString(input, "")
+	lines := strings.Split(input, "\n")
+	return Race{time: toInt(lines[0]), recordDistance: toInt(lines[1])}
+}
+
+func readInput() string {
+	dat, err := os.ReadFile("input.txt")
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(dat))
+}
+
+func toInt(str string) int {
+	n, err := strconv.Atoi(str)
+	if err != nil {
+		panic(err)
+	}
+	return n
+}
+
 func main() {
-	race := Race{time: 38947970, recordDistance: 241154910741091}
+	race := NewRace(readInput())
 	fmt.Println(race.countImprovements())
 }
