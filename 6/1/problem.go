@@ -23,12 +23,6 @@ func (race Race) countImprovements() int {
 }
 
 func main() {
-	// races := []Race{
-	// 	{time: 7, recordDistance: 9},
-	// 	{time: 15, recordDistance: 40},
-	// 	{time: 30, recordDistance: 200},
-	// }
-
 	races := []Race{
 		{time: 38, recordDistance: 241},
 		{time: 94, recordDistance: 1549},
