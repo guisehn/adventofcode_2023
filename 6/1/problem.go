@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
+)
 
 type Race struct {
 	time           int
@@ -22,13 +28,40 @@ func (race Race) countImprovements() int {
 	return count
 }
 
-func main() {
-	races := []Race{
-		{time: 38, recordDistance: 241},
-		{time: 94, recordDistance: 1549},
-		{time: 79, recordDistance: 1074},
-		{time: 70, recordDistance: 1091},
+func readInput() string {
+	dat, err := os.ReadFile("input.txt")
+	if err != nil {
+		panic(err)
 	}
+	return strings.TrimSpace(string(dat))
+}
+
+func toInt(str string) int {
+	n, err := strconv.Atoi(str)
+	if err != nil {
+		panic(err)
+	}
+	return n
+}
+
+func buildRaces(input string) []Race {
+	input = regexp.MustCompile("([^0-9 \n])").ReplaceAllString(input, "")
+	input = regexp.MustCompile("[ ]+").ReplaceAllString(input, " ")
+
+	lines := strings.Split(input, "\n")
+	times := strings.Split(strings.TrimSpace(lines[0]), " ")
+	distances := strings.Split(strings.TrimSpace(lines[1]), " ")
+
+	races := []Race{}
+	for i, time := range times {
+		races = append(races, Race{time: toInt(time), recordDistance: toInt(distances[i])})
+	}
+	return races
+}
+
+func main() {
+	input := readInput()
+	races := buildRaces(input)
 
 	result := 1
 	for _, race := range races {
