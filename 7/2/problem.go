@@ -39,16 +39,6 @@ const (
 	HighCard     HandType = 1
 )
 
-// var handTypes = map[HandType]string{
-// 	FiveOfAKind:  "FiveOfAKind",
-// 	FourOfAKind:  "FourOfAKind",
-// 	FullHouse:    "FullHouse",
-// 	ThreeOfAKind: "ThreeOfAKind",
-// 	TwoPair:      "TwoPair",
-// 	OnePair:      "OnePair",
-// 	HighCard:     "HighCard",
-// }
-
 type Hand struct {
 	cards []string
 	bid   int
@@ -63,7 +53,21 @@ func NewHand(input string) Hand {
 	}
 }
 
-func (hand Hand) jokerizedCards() []string {
+func (hand Hand) JokerizedCards() []string {
+	mostCommonCard := hand.MostCommonCard()
+	newCards := []string{}
+
+	for _, card := range hand.cards {
+		if card == "J" {
+			newCards = append(newCards, mostCommonCard)
+		} else {
+			newCards = append(newCards, card)
+		}
+	}
+	return newCards
+}
+
+func (hand Hand) MostCommonCard() string {
 	counts := countCards(hand.cards)
 	delete(counts, "J")
 
@@ -75,19 +79,11 @@ func (hand Hand) jokerizedCards() []string {
 		}
 	}
 
-	newCards := []string{}
-	for _, card := range hand.cards {
-		if card == "J" {
-			newCards = append(newCards, mostCommonCard)
-		} else {
-			newCards = append(newCards, card)
-		}
-	}
-	return newCards
+	return mostCommonCard
 }
 
-func (hand Hand) handType() HandType {
-	counts := countCards(hand.jokerizedCards())
+func (hand Hand) HandType() HandType {
+	counts := countCards(hand.JokerizedCards())
 
 	if len(counts) == 1 {
 		return FiveOfAKind
@@ -121,7 +117,7 @@ func (list ByTypeAndScore) Len() int      { return len(list) }
 func (list ByTypeAndScore) Swap(i, j int) { list[i], list[j] = list[j], list[i] }
 func (list ByTypeAndScore) Less(i, j int) bool {
 	a, b := list[i], list[j]
-	aType, bType := a.handType(), b.handType()
+	aType, bType := a.HandType(), b.HandType()
 
 	if aType != bType {
 		return aType < bType
@@ -180,7 +176,6 @@ func main() {
 	result := 0
 	for i, hand := range hands {
 		rank := i + 1
-		// fmt.Println("RANK", rank, "\tHand", hand.cards, "is", handTypes[hand.handType()])
 		result += rank * hand.bid
 	}
 

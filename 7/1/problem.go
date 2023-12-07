@@ -39,16 +39,6 @@ const (
 	HighCard     HandType = 1
 )
 
-var handTypes = map[HandType]string{
-	FiveOfAKind:  "FiveOfAKind",
-	FourOfAKind:  "FourOfAKind",
-	FullHouse:    "FullHouse",
-	ThreeOfAKind: "ThreeOfAKind",
-	TwoPair:      "TwoPair",
-	OnePair:      "OnePair",
-	HighCard:     "HighCard",
-}
-
 type Hand struct {
 	cards []string
 	bid   int
@@ -63,8 +53,8 @@ func NewHand(input string) Hand {
 	}
 }
 
-func (hand Hand) handType() HandType {
-	counts := hand.cardCounts()
+func (hand Hand) HandType() HandType {
+	counts := hand.CardCounts()
 
 	if len(counts) == 1 {
 		return FiveOfAKind
@@ -92,7 +82,7 @@ func (hand Hand) handType() HandType {
 	return HighCard
 }
 
-func (hand Hand) cardCounts() map[string]int {
+func (hand Hand) CardCounts() map[string]int {
 	counts := make(map[string]int)
 
 	for _, card := range hand.cards {
@@ -113,7 +103,7 @@ func (list ByTypeAndScore) Len() int      { return len(list) }
 func (list ByTypeAndScore) Swap(i, j int) { list[i], list[j] = list[j], list[i] }
 func (list ByTypeAndScore) Less(i, j int) bool {
 	a, b := list[i], list[j]
-	aType, bType := a.handType(), b.handType()
+	aType, bType := a.HandType(), b.HandType()
 
 	if aType != bType {
 		return aType < bType
@@ -157,7 +147,6 @@ func main() {
 	result := 0
 	for i, hand := range hands {
 		rank := i + 1
-		// fmt.Println("RANK", rank, "\tHand", hand.cards, "is", handTypes[hand.handType()])
 		result += rank * hand.bid
 	}
 
